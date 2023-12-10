@@ -18,14 +18,14 @@
 
 typedef struct s_vector
 {
-	int		*data;
-	size_t	size;
-	size_t	capacity;
+	unsigned int	*data;
+	size_t			size;
+	size_t			capacity;
 }	t_vector;
 
-t_vector	*vector_new(void);
-void		vector_delete(t_vector *vector);
-int			*vector_reserve(t_vector *vector, size_t new_capacity);
-bool		vector_push(t_vector *vector, int value);
+t_vector		*vector_new(void);
+void			vector_delete(t_vector *vector);
+unsigned int	*vector_reserve(t_vector *vector, size_t new_capacity);
+bool			vector_push(t_vector *vector, unsigned int value);
 
 #endif

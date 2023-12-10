@@ -33,11 +33,11 @@ void	vector_delete(t_vector *vector)
 	free(vector);
 }
 
-int	*vector_reserve(t_vector *vector, size_t new_capacity)
+unsigned int	*vector_reserve(t_vector *vector, size_t new_capacity)
 {
-	int *const	old_data = vector->data;
-	int			*new_data;
-	size_t		i;
+	unsigned int *const	old_data = vector->data;
+	unsigned int		*new_data;
+	size_t				i;
 
 	if (vector->capacity >= new_capacity)
 		return (old_data);
@@ -56,7 +56,7 @@ int	*vector_reserve(t_vector *vector, size_t new_capacity)
 	return (new_data);
 }
 
-bool	vector_push(t_vector *vector, int value)
+bool	vector_push(t_vector *vector, unsigned int value)
 {
 	const size_t	future_size = vector->size + 1;
 	size_t			new_capacity;

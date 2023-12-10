@@ -18,12 +18,12 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i])
-		i++;
+	while (s[i++])
+		;
 	return (i);
 }
 
-void	ft_puterr(const char *s)
+int	ft_puterr(const char *s)
 {
 	const size_t	len = ft_strlen(s);
 	size_t			i;
@@ -34,21 +34,42 @@ void	ft_puterr(const char *s)
 	{
 		result = write(STDERR_FILENO, &s[i], len - i);
 		if (result < 0)
-			return ;
+			return (-1);
 		i += result;
 	}
+	return (0);
 }
 
-static const bool g_space[] = {
-	['\t'] = true,
-	['\n'] = true,
-	['\v'] = true,
-	['\f'] = true,
-	['\r'] = true,
-	[' '] = true,
+static const bool	g_space[] = {
+['\t'] = true,
+['\n'] = true,
+['\v'] = true,
+['\f'] = true,
+['\r'] = true,
+[' '] = true,
+[0xFF] = false,
 };
 
-bool ft_isspace(char c)
+bool	ft_isspace(char c)
 {
-	return (g_space[c]);
+	return (g_space[(unsigned char)c]);
+}
+
+static const bool	g_digit[] = {
+['0'] = true,
+['1'] = true,
+['2'] = true,
+['3'] = true,
+['4'] = true,
+['5'] = true,
+['6'] = true,
+['7'] = true,
+['8'] = true,
+['9'] = true,
+[0xFF] = false,
+};
+
+bool	ft_isdigit(char c)
+{
+	return (g_digit[(unsigned char)c]);
 }

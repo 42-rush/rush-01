@@ -12,46 +12,87 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 #include "libft.h"
 #include "vector.h"
 
-#include <stdio.h>
-#define PRINT_VECTOR(_v) for (size_t i = 0; i < (_v)->size; i++) printf(#_v "[ %zu ] = %d\n", i, (_v)->data[i])
-
-static t_vector	*parse_argument(const char *s)
+static size_t	_uint_length(unsigned int n)
 {
-	t_vector	*vec;
-	size_t		i;
+	static const unsigned int	radix = 10U;
+	size_t						i;
 
-	vec = vector_new();
+	i = n == 0U;
+	while (n != 0U)
+	{
+		i++;
+		n /= radix;
+	}
+	return (i);
+}
+
+static bool	_uint_try_parse(const char *s, size_t len, unsigned int *out_value)
+{
+	unsigned long	number;
+	size_t			i;
+
+	if (len > _uint_length(UINT_MAX))
+		return (false);
+	i = 0;
+	number = 0UL;
+	while (i < len && s[i] != '\0')
+		number = 10UL * number + (s[i++] - '0');
+	if (number > UINT_MAX)
+		return (false);
+	*out_value = number;
+	return (true);
+}
+
+static t_vector	*_parse_argument(const char *s)
+{
+	t_vector *const	vector = vector_new();
+	size_t			i;
+	unsigned int	value;
+
 	i = 0;
 	while (*s)
 	{
-		//TODO: 
-		if (!vector_push(vec, i))
+		while (ft_isspace(*s))
+			s++;
+		if (!*s)
+			break ;
+		i = 0;
+		while (ft_isdigit(s[i]))
+			i++;
+		if ((s[i] != '\0' && !ft_isspace(s[i]))
+			|| !_uint_try_parse(s, i, &value)
+			|| !vector_push(vector, value))
 		{
-			vector_delete(vec);
+			vector_delete(vector);
 			return (NULL);
 		}
+		s += i;
 	}
-	return (vec);
+	return (vector);
 }
 
 int	main(int argc, char *argv[])
 {
-	t_vector	*vec;
+	t_vector	*vector;
 
 	if (argc != 2)
 	{
-		ft_puterr("Error\n");
-		return (EXIT_FAILURE);
+		(void)ft_puterr("rush-01: Usage: ./rush-01 \"col_up_1 ... col_up_n"
+			"col_down_1 ... col_down_n"
+			"row_left_1 ... row_left_n"
+			"row_right_1 ... row_right_n\"\n");
+		return (EXIT_FAILURE + 1);
 	}
-	vec = parse_argument(argv[1]);
-	if (vec == NULL)
+	vector = _parse_argument(argv[1]);
+	if (vector == NULL)
 	{
-		ft_puterr("Error\n");
+		(void)ft_puterr("Error\n");
 		return (EXIT_FAILURE);
 	}
-	vector_delete(vec);
+	vector_delete(vector);
 	return (EXIT_SUCCESS);
 }

@@ -17,7 +17,8 @@
 # include <stdbool.h>
 
 size_t	ft_strlen(const char *s);
-void	ft_puterr(const char *s);
+int		ft_puterr(const char *s);
 bool	ft_isspace(char c);
+bool	ft_isdigit(char c);
 
 #endif
