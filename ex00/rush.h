@@ -18,9 +18,9 @@
 
 typedef struct s_rush
 {
-	const unsigned int	*s;
+	const unsigned int	*view;
 	unsigned int		n;
-	unsigned int		*a;
+	unsigned int		*height;
 }	t_rush;
 
 enum e_rush_errno
