@@ -10,76 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "rush.h"
 #include <unistd.h>
 #include "libft.h"
+#include "vector.h"
 
-size_t	ft_strlen(const char *s)
+static void	_rush_solve(const t_rush *rush)
 {
-	size_t	i;
-
-	i = 0;
-	while (s[i++])
-		;
-	return (i);
+	(void)&rush;
 }
 
-int	ft_puterr(const char *s)
+enum e_rush_errno	rush(const t_vector *vector)
 {
-	const size_t	len = ft_strlen(s);
-	size_t			i;
-	ssize_t			result;
+	t_rush		rush;
+	size_t		i;
 
+	if (vector->size % 4 != 0)
+		return (rush_error_indivisible);
 	i = 0;
-	while (i < len)
+	while (i < vector->size)
 	{
-		result = write(STDERR_FILENO, &s[i], len - i);
-		if (result < 0)
-			return (-1);
-		i += result;
+		if (vector->data[i] < 1 || vector->data[i] >= rush.n)
+			return (rush_error_out_of_range);
+		i++;
 	}
-	return (0);
-}
-
-static const bool	g_space[] = {
-['\t'] = true,
-['\n'] = true,
-['\v'] = true,
-['\f'] = true,
-['\r'] = true,
-[' '] = true,
-[0xFF] = false,
-};
-
-bool	ft_isspace(char c)
-{
-	return (g_space[(unsigned char)c]);
-}
-
-static const bool	g_digit[] = {
-['0'] = true,
-['1'] = true,
-['2'] = true,
-['3'] = true,
-['4'] = true,
-['5'] = true,
-['6'] = true,
-['7'] = true,
-['8'] = true,
-['9'] = true,
-[0xFF] = false,
-};
-
-bool	ft_isdigit(char c)
-{
-	return (g_digit[(unsigned char)c]);
-}
-
-void	*ft_memset(void *s, int c, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-		((unsigned char *)s)[i++] = (unsigned char)c;
-	return (s);
+	rush.s = vector->data;
+	rush.n = vector->size / 4;
+	rush.a = malloc(rush.n * rush.n * sizeof(*vector->data));
+	if (rush.a == NULL)
+		return (rush_error_memory_allocate);
+	ft_memset(rush.a, 0, rush.n * rush.n * sizeof(*vector->data));
+	_rush_solve(&rush);
+	free(rush.a);
+	return (rush_success);
 }

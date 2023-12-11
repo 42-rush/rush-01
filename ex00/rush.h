@@ -10,22 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_H
-# define VECTOR_H
+#ifndef RUSH_H
+# define RUSH_H
 
 # include <stdlib.h>
-# include <stdbool.h>
+# include "vector.h"
 
-typedef struct s_vector
+typedef struct s_rush
 {
-	unsigned int	*data;
-	size_t			size;
-	size_t			capacity;
-}	t_vector;
+	const unsigned int	*s;
+	unsigned int		n;
+	unsigned int		*a;
+}	t_rush;
 
-void			vector_construct(t_vector *vector);
-void			vector_destruct(t_vector *vector);
-unsigned int	*vector_reserve(t_vector *vector, size_t new_capacity);
-bool			vector_push(t_vector *vector, unsigned int value);
+enum e_rush_errno
+{
+	rush_success,
+	rush_error_indivisible,
+	rush_error_out_of_range,
+	rush_error_memory_allocate,
+};
+
+enum e_rush_errno	rush(const t_vector *vector);
 
 #endif

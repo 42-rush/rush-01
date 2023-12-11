@@ -13,24 +13,16 @@
 #include "vector.h"
 #include <stddef.h>
 
-t_vector	*vector_new(void)
+void	vector_construct(t_vector *vector)
 {
-	t_vector *const	vector = malloc(sizeof(t_vector));
-
-	if (vector == NULL)
-		return (NULL);
 	vector->data = NULL;
 	vector->size = (size_t)0;
 	vector->capacity = (size_t)0;
-	return (vector);
 }
 
-void	vector_delete(t_vector *vector)
+void	vector_destruct(t_vector *vector)
 {
-	if (vector == NULL)
-		return ;
 	free(vector->data);
-	free(vector);
 }
 
 unsigned int	*vector_reserve(t_vector *vector, size_t new_capacity)

@@ -20,5 +20,6 @@ size_t	ft_strlen(const char *s);
 int		ft_puterr(const char *s);
 bool	ft_isspace(char c);
 bool	ft_isdigit(char c);
+void	*ft_memset(void *s, int c, size_t n);
 
 #endif
