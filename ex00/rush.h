@@ -29,6 +29,7 @@ enum e_rush_errno
 	rush_error_indivisible,
 	rush_error_out_of_range,
 	rush_error_memory_allocate,
+	rush_error_none_solution,
 };
 
 enum e_rush_errno	rush(const t_vector *vector);

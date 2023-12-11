@@ -15,15 +15,17 @@
 #include "libft.h"
 #include "vector.h"
 
-static void	_rush_solve(const t_rush *rush)
+static bool	_rush_solve(const t_rush *rush)
 {
 	(void)&rush;
+	return (false);
 }
 
 enum e_rush_errno	rush(const t_vector *vector)
 {
 	t_rush		rush;
 	size_t		i;
+	bool		encountered;
 
 	if (vector->size % 4 != 0)
 		return (rush_error_indivisible);
@@ -40,7 +42,9 @@ enum e_rush_errno	rush(const t_vector *vector)
 	if (rush.a == NULL)
 		return (rush_error_memory_allocate);
 	ft_memset(rush.a, 0, rush.n * rush.n * sizeof(*vector->data));
-	_rush_solve(&rush);
+	encountered = _rush_solve(&rush);
 	free(rush.a);
+	if (!encountered)
+		return (rush_error_none_solution);
 	return (rush_success);
 }
