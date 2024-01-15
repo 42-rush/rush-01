@@ -72,10 +72,36 @@ static bool	_parse_argument(t_vector *vector, const char *s)
 	return (true);
 }
 
+int	program(t_vector *vector, const char *arg, const char **ref_error_message)
+{
+	enum e_rush_errno	result;
+
+	if (!_parse_argument(vector, arg))
+	{
+		*ref_error_message = "Error: invalid argument\n";
+		return (EXIT_FAILURE + 2);
+	}
+	result = rush(vector);
+	if (result != rush_success)
+	{
+		if (result == rush_error_indivisible)
+			*ref_error_message = "Error: indivisible\n";
+		else if (result == rush_error_out_of_range)
+			*ref_error_message = "Error: out of range\n";
+		else if (result == rush_error_bad_allocate)
+			*ref_error_message = "Error: bad allocate\n";
+		else if (result == rush_error_none_solution)
+			*ref_error_message = "Error: none solution\n";
+		return (EXIT_FAILURE + 16 + result);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_vector	vector;
 	int			exit_status;
+	const char	*error_message;
 
 	if (argc != 2)
 	{
@@ -85,13 +111,10 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE + 1);
 	}
 	vector_construct(&vector);
-	exit_status = EXIT_SUCCESS;
-	if (!_parse_argument(&vector, argv[1])
-		|| rush(&vector) != rush_success)
-	{
-		(void)ft_puterr("Error\n");
-		exit_status = EXIT_FAILURE;
-	}
+	error_message = NULL;
+	exit_status = program(&vector, argv[1], &error_message);
+	if (error_message != NULL)
+		(void)ft_puterr(error_message);
 	vector_destruct(&vector);
 	return (exit_status);
 }

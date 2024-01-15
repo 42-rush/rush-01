@@ -70,7 +70,7 @@ enum e_rush_errno	rush(const t_vector *vector)
 {
 	t_rush		rush;
 	size_t		i;
-	bool		encountered;
+	bool		has_solution;
 
 	if (vector->size % 4 != 0)
 		return (rush_error_indivisible);
@@ -85,12 +85,12 @@ enum e_rush_errno	rush(const t_vector *vector)
 	rush.n = vector->size / 4;
 	rush.height = malloc(rush.n * rush.n * sizeof(*vector->data));
 	if (rush.height == NULL)
-		return (rush_error_memory_allocate);
+		return (rush_error_bad_allocate);
 	ft_memset(rush.height, 0, rush.n * rush.n * sizeof(*vector->data));
 	_rush_candidate(&rush);
-	encountered = _rush_solve(&rush, 0);
+	has_solution = _rush_solve(&rush, 0);
 	free(rush.height);
-	if (!encountered)
+	if (!has_solution)
 		return (rush_error_none_solution);
 	return (rush_success);
 }

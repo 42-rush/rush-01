@@ -28,7 +28,7 @@ enum e_rush_errno
 	rush_success,
 	rush_error_indivisible,
 	rush_error_out_of_range,
-	rush_error_memory_allocate,
+	rush_error_bad_allocate,
 	rush_error_none_solution,
 };
 
